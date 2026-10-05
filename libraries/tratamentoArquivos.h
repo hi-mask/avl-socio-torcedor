@@ -1,6 +1,5 @@
 #ifndef TRATAMENTOARQUIVOS_H
 #define TRATAMENTOARQUIVOS_H
-#include <stdio.h>
 
 /*=========================================================
     Função: verificarAberturaArquivo
