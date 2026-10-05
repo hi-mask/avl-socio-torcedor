@@ -13,9 +13,9 @@ typedef struct No {
     float valor;
     int status;           /* 1=em dia  0=inadimplente */
     int altura;           /* obrigatorio na AVL */
-    struct No *esquerdo;
-    struct No *direito;
-} TNo;
+    struct No *esq;
+    struct No *dir;
+} No;
 
 /*=========================================================
     Função: criarNo
@@ -31,11 +31,11 @@ typedef struct No {
         4 - valor  : valor da mensalidade do plano
         5 - status : situação do sócio
     Retorno:
-        TNo * : endereço do nó criado e preenchido com os valores
+        No * : endereço do nó criado e preenchido com os valores
                 recebidos.
         NULL : O nó não pôde ser criado
 =========================================================*/
-TNo * criarNo(int chave, const char *nome, int plano, float valor, int status);
+No * criarNo(int chave, const char *nome, int plano, float valor, int status);
 
 /*=========================================================
     Função: verificarMallocNo
@@ -50,7 +50,7 @@ TNo * criarNo(int chave, const char *nome, int plano, float valor, int status);
     Retorno:
         void. Em caso de falha, o programa termina com exit(1).
   =========================================================*/
-void verificarMallocNo(TNo const * const no);
+void verificarMallocNo(No const * const no);
 
 /*=========================================================
     Função: nomePlano
@@ -84,7 +84,7 @@ const char * nomePlano(int plano);
     Retorno:
         void. Se n for NULL, não imprime nada.
   =========================================================*/
-void mostrarSocio(TNo const * const n);
+void mostrarSocio(No const * const n);
  
 /*=========================================================
     Função: altura
@@ -98,7 +98,7 @@ void mostrarSocio(TNo const * const n);
     Retorno:
         int : altura do nó, ou 0 se n for NULL.
   =========================================================*/
-int altura(TNo const * const n);
+int altura(No const * const n);
 
 /*=========================================================
     Função: atualizaAltura
@@ -106,7 +106,7 @@ int altura(TNo const * const n);
 
     Descrição:
         Recalcula a altura de um nó a partir da altura dos filhos:
-        altura = 1 + max(altura do esquerdo, altura do direito).
+        altura = 1 + max(altura do esq, altura do dir).
     Parâmetros:
         1 - n : nó cuja altura será recalculada
     Retorno:
@@ -117,7 +117,7 @@ int altura(TNo const * const n);
         por último), pois depende das alturas dos filhos já
         atualizadas.
   =========================================================*/
-void atualizaAltura(TNo *n);
+void atualizaAltura(No *n);
  
 /*=========================================================
     Função: fb
@@ -125,7 +125,7 @@ void atualizaAltura(TNo *n);
 
     Descrição:
         Calcula o fator de balanceamento (FB) de um nó:
-        FB = altura(esquerdo) - altura(direito).
+        FB = altura(esq) - altura(dir).
     Parâmetros:
         1 - n : nó a ser avaliado (pode ser NULL)
     Retorno:
@@ -134,21 +134,21 @@ void atualizaAltura(TNo *n);
               FB >= +2 indica desbalanceamento à esquerda e
               FB <= -2, desbalanceamento à direita.
   =========================================================*/
-int fb(TNo const * const n);
+int fb(No const * const n);
  
 /*=========================================================
     Função: emOrdem
     Autor: Marcos Paulo da Silva Oliveira
 
     Descrição:
-        Percorre a árvore em ordem (esquerdo, nó, direito) e
+        Percorre a árvore em ordem (esq, nó, dir) e
         imprime os sócios em ordem crescente de ID.
     Parâmetros:
         1 - raiz : raiz da árvore (ou subárvore) a ser percorrida
     Retorno:
         void. Se raiz for NULL, não imprime nada.
   =========================================================*/
-void emOrdem(TNo const * const raiz);
+void emOrdem(No const * const raiz);
  
 /*=========================================================
     Função: mostrarFB
@@ -163,7 +163,7 @@ void emOrdem(TNo const * const raiz);
     Retorno:
         void. Se raiz for NULL, não imprime nada.
   =========================================================*/
-void mostrarFB(TNo const * const raiz);
+void mostrarFB(No const * const raiz);
  
 /*=========================================================
     Função: desenhar
@@ -179,7 +179,7 @@ void mostrarFB(TNo const * const raiz);
     Retorno:
         void. Se raiz for NULL, não imprime nada.
   =========================================================*/
-void desenhar(TNo const * const raiz, int nivel);
+void desenhar(No const * const raiz, int nivel);
 
 /*=========================================================
     Função: inserir
@@ -195,11 +195,11 @@ void desenhar(TNo const * const raiz, int nivel);
         5 - valor  : valor da mensalidade do plano
         6 - status : situação do sócio
     Retorno:
-        TNo * : endereço do nó criado e preenchido com os valores
+        No * : endereço do nó criado e preenchido com os valores
                 recebidos.
         NULL : O nó não pôde ser criado
 =========================================================*/
-TNo * inserir(TNo *raiz, int chave, const char *nome, int plano,
+No * inserir(No *raiz, int chave, const char *nome, int plano,
      float valor, int status);
 
 /*=========================================================
@@ -212,9 +212,9 @@ TNo * inserir(TNo *raiz, int chave, const char *nome, int plano,
         1 - raiz   : Nó que rebeberá dados
         2 - chave  : número da carteirinha do sócio (ID único)
     Retorno:
-        TNo * : endereço do nó procurado
+        No * : endereço do nó procurado
 =========================================================*/
-TNo * buscar(TNo *raiz, int chave);
+No * buscar(No *raiz, int chave);
 
 /*=========================================================
     Função: liberar
@@ -227,5 +227,5 @@ TNo * buscar(TNo *raiz, int chave);
     Retorno:
         void.
 =========================================================*/
-void liberarArvore(TNo *raiz);
+void liberarArvore(No *raiz);
 #endif

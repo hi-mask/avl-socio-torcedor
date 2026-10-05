@@ -22,7 +22,7 @@ O sistema usa a AVL como índice e também para listar sócios em ordem e por fa
 | `valor` | `float` | Mensalidade do plano |
 | `status` | `int` | 1 = em dia, 0 = inadimplente |
 | `altura` | `int` | Altura do nó (controle da AVL) |
-| `esquerdo` / `direito` | `TNo *` | Filhos |
+| `esq` / `dir` | `No *` | Filhos |
 
 ```c
 typedef struct No {
@@ -32,9 +32,9 @@ typedef struct No {
     float valor;
     int status;           /* 1=em dia  0=inadimplente */
     int altura;           /* obrigatorio na AVL */
-    struct No *esquerdo;
-    struct No *direito;
-} TNo;
+    struct No *esq;
+    struct No *dir;
+} No;
 ```
 
 ## Funcionalidades
@@ -57,7 +57,7 @@ typedef struct No {
 ```
 .
 ├── src/
-│   ├── socioAVL.h        # struct TNo e protótipos
+│   ├── socioAVL.h        # struct No e protótipos
 │   ├── socioAVL.c        # AVL: inserção, rotações, busca, remoção, listagens
 │   └── main.c            # menu e testes
 ├── data/
