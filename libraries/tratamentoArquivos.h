@@ -1,5 +1,5 @@
-#ifndef TRATAMENTO_H
-#define TRATAMENTO_H
+#ifndef TRATAMENTOARQUIVOS_H
+#define TRATAMENTOARQUIVOS_H
 #include <stdio.h>
 
 /*=========================================================
