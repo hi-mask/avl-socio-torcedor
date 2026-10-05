@@ -1,6 +1,7 @@
 #ifndef TRATAMENTOARQUIVOS_H
 #define TRATAMENTOARQUIVOS_H
-
+#include "../libraries/socioAVL.h"
+#include <stdlib.h>
 /*=========================================================
     Função: verificarAberturaArquivo
     Autor: Samuel de Godoy Larroque
