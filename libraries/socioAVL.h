@@ -181,4 +181,51 @@ void mostrarFB(TNo const * const raiz);
   =========================================================*/
 void desenhar(TNo const * const raiz, int nivel);
 
+/*=========================================================
+    Função: inserir
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Insere dados de um sócio-torcedor em um nó da árvore AVL 
+    Parâmetros:
+        1 - raiz   : Nó que rebeberá dados
+        2 - chave  : número da carteirinha do sócio (ID único)
+        3 - nome   : ponteiro para o nome do sócio
+        4 - plano  : código do plano
+        5 - valor  : valor da mensalidade do plano
+        6 - status : situação do sócio
+    Retorno:
+        TNo * : endereço do nó criado e preenchido com os valores
+                recebidos.
+        NULL : O nó não pôde ser criado
+=========================================================*/
+TNo * inserir(TNo *raiz, int chave, const char *nome, int plano,
+     float valor, int status);
+
+/*=========================================================
+    Função: buscar
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Busca um sócio torcedor pelo sua carteirinha (ID)
+    Parâmetros:
+        1 - raiz   : Nó que rebeberá dados
+        2 - chave  : número da carteirinha do sócio (ID único)
+    Retorno:
+        TNo * : endereço do nó procurado
+=========================================================*/
+TNo * buscar(TNo *raiz, int chave);
+
+/*=========================================================
+    Função: liberar
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Libera a árvore inteira;
+    Parâmetros:
+        1 - raiz   : Nó da raiz
+    Retorno:
+        void.
+=========================================================*/
+void liberarArvore(TNo *raiz);
 #endif

@@ -226,3 +226,100 @@ void desenhar(TNo const * const raiz, int nivel) {
     printf("%d\n", raiz->chave);
     desenhar(raiz->esquerdo, nivel + 1);
 }
+
+/*=========================================================
+    Função: inserir
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Insere dados de um sócio-torcedor em um nó da árvore AVL 
+    Parâmetros:
+        1 - raiz   : Nó que rebeberá dados
+        2 - chave  : número da carteirinha do sócio (ID único)
+        3 - nome   : ponteiro para o nome do sócio
+        4 - plano  : código do plano
+        5 - valor  : valor da mensalidade do plano
+        6 - status : situação do sócio
+    Retorno:
+        TNo * : endereço do nó criado e preenchido com os valores
+                recebidos.
+        NULL : O nó não pôde ser criado
+=========================================================*/
+TNo * inserir(TNo *raiz, int chave, const char *nome, int plano,
+     float valor, int status) {
+
+    /* --- Passo 1: inserção normal de BST --- */
+    if (raiz == NULL)
+        return criarNo(chave, nome, plano, valor, status);
+
+    if (chave < raiz->chave)
+        raiz->esquerdo = inserir(raiz->esquerdo, chave, nome,
+             plano, valor, status);
+    else if (chave > raiz->chave)
+        raiz->direito = inserir(raiz->direito, chave, nome,
+             plano, valor, status);
+    else
+        return raiz;   /* duplicata — ignora */
+
+    /* --- Passo 2: atualiza altura deste nó --- */
+    atualizaAltura(raiz);
+
+    /* --- Passo 3: verifica FB e rotaciona se necessário --- */
+    int f = fb(raiz);
+
+    /* LL: pesado à esquerda, inserção no filho esquerdo do filho esquerdo */
+    if (f > 1 && chave < raiz->esquerdo->chave)
+        return rotacaoDireita(raiz);
+
+    /* RR: pesado à direita, inserção no filho direito do filho direito */
+    if (f < -1 && chave > raiz->direito->chave)
+        return rotacaoEsquerda(raiz);
+
+    /* LR: pesado à esquerda, inserção no filho direito do filho esquerdo */
+    if (f > 1 && chave > raiz->esquerdo->chave)
+        return rotacaoLR(raiz);
+
+    /* RL: pesado à direita, inserção no filho esquerdo do filho direito */
+    if (f < -1 && chave < raiz->direito->chave)
+        return rotacaoRL(raiz);
+
+    return raiz;   /* sem rotação necessária */
+}
+
+/*=========================================================
+    Função: buscar
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Busca um sócio torcedor pelo sua carteirinha (ID)
+    Parâmetros:
+        1 - raiz   : Nó que rebeberá dados
+        2 - chave  : número da carteirinha do sócio (ID único)
+    Retorno:
+        TNo * : endereço do nó procurado
+=========================================================*/
+TNo * buscar(TNo *raiz, int chave) {
+    if (raiz == NULL || raiz->chave == chave)
+        return raiz;
+    if (chave < raiz->chave)
+        return buscar(raiz->esquerdo, chave);
+    return buscar(raiz->direito, chave);
+}
+
+/*=========================================================
+    Função: liberar
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Libera a árvore inteira;
+    Parâmetros:
+        1 - raiz   : Nó da raiz
+    Retorno:
+        void.
+=========================================================*/
+void liberarArvore(TNo *raiz) {
+    if (raiz == NULL) return;
+    liberarArvore(raiz->esquerdo);
+    liberarArvore(raiz->direito);
+    free(raiz);
+}
