@@ -17,12 +17,12 @@
         4 - valor  : valor da mensalidade do plano
         5 - status : situação do sócio
     Retorno:
-        TNo * : endereço do nó criado e preenchido com os valores
+        No * : endereço do nó criado e preenchido com os valores
                 recebidos.
         NULL : O nó não pôde ser criado
 =========================================================*/
-TNo* criarNo(int chave, const char *nome, int plano, float valor, int status) {
-    TNo * no = malloc(sizeof(TNo));
+No* criarNo(int chave, const char *nome, int plano, float valor, int status) {
+    No * no = malloc(sizeof(No));
     verificarMallocNo(no);
     no->chave = chave;
     strncpy(no->nome, nome, sizeof(no->nome) - 1);
@@ -30,8 +30,8 @@ TNo* criarNo(int chave, const char *nome, int plano, float valor, int status) {
     no->plano = plano;
     no->valor = valor;
     no->status = status;
-    no->esquerdo = NULL;
-    no->direito = NULL;
+    no->esq = NULL;
+    no->dir = NULL;
     no->altura = 1;
     return no;
 }
@@ -49,7 +49,7 @@ TNo* criarNo(int chave, const char *nome, int plano, float valor, int status) {
     Retorno:
         void. Em caso de falha, o programa termina com exit(1).
   =========================================================*/
-void verificarMallocNo(TNo const * const no) {
+void verificarMallocNo(No const * const no) {
     if(no == NULL) {
         printf("Problema ao alocar o No!\n");
         exit(1);
@@ -96,7 +96,7 @@ const char * nomePlano(int plano) {
     Retorno:
         void. Se n for NULL, não imprime nada.
   =========================================================*/
-void mostrarSocio(TNo const * const n) {
+void mostrarSocio(No const * const n) {
     if (n == NULL) return;
     printf("ID %d | %s | Plano %s | R$ %.2f | %s\n",
            n->chave, n->nome, nomePlano(n->plano), n->valor,
@@ -115,7 +115,7 @@ void mostrarSocio(TNo const * const n) {
     Retorno:
         int : altura do nó, ou 0 se n for NULL.
   =========================================================*/
-int altura(TNo const * const n) {
+int altura(No const * const n) {
     if (n == NULL) return 0;
     return n->altura;
 }
@@ -126,7 +126,7 @@ int altura(TNo const * const n) {
 
     Descrição:
         Recalcula a altura de um nó a partir da altura dos filhos:
-        altura = 1 + max(altura do esquerdo, altura do direito).
+        altura = 1 + max(altura do esq, altura do dir).
     Parâmetros:
         1 - n : nó cuja altura será recalculada
     Retorno:
@@ -137,11 +137,11 @@ int altura(TNo const * const n) {
         por último), pois depende das alturas dos filhos já
         atualizadas.
   =========================================================*/
-void atualizaAltura(TNo *n) {
+void atualizaAltura(No *n) {
     int ae, ad;
     if (n == NULL) return;
-    ae = altura(n->esquerdo);
-    ad = altura(n->direito);
+    ae = altura(n->esq);
+    ad = altura(n->dir);
     n->altura = 1 + (ae > ad ? ae : ad);
 }
 
@@ -151,7 +151,7 @@ void atualizaAltura(TNo *n) {
 
     Descrição:
         Calcula o fator de balanceamento (FB) de um nó:
-        FB = altura(esquerdo) - altura(direito).
+        FB = altura(esq) - altura(dir).
     Parâmetros:
         1 - n : nó a ser avaliado (pode ser NULL)
     Retorno:
@@ -160,9 +160,9 @@ void atualizaAltura(TNo *n) {
               FB >= +2 indica desbalanceamento à esquerda e
               FB <= -2, desbalanceamento à direita.
   =========================================================*/
-int fb(TNo const * const n) {
+int fb(No const * const n) {
     if (n == NULL) return 0;
-    return altura(n->esquerdo) - altura(n->direito);
+    return altura(n->esq) - altura(n->dir);
 }
 
 /*=========================================================
@@ -170,18 +170,18 @@ int fb(TNo const * const n) {
     Autor: Marcos Paulo da Silva Oliveira
 
     Descrição:
-        Percorre a árvore em ordem (esquerdo, nó, direito) e
+        Percorre a árvore em ordem (esq, nó, dir) e
         imprime os sócios em ordem crescente de ID.
     Parâmetros:
         1 - raiz : raiz da árvore (ou subárvore) a ser percorrida
     Retorno:
         void. Se raiz for NULL, não imprime nada.
   =========================================================*/
-void emOrdem(TNo const * const raiz) {
+void emOrdem(No const * const raiz) {
     if (raiz == NULL) return;
-    emOrdem(raiz->esquerdo);
+    emOrdem(raiz->esq);
     mostrarSocio(raiz);
-    emOrdem(raiz->direito);
+    emOrdem(raiz->dir);
 }
 
 /*=========================================================
@@ -197,11 +197,11 @@ void emOrdem(TNo const * const raiz) {
     Retorno:
         void. Se raiz for NULL, não imprime nada.
   =========================================================*/
-void mostrarFB(TNo const * const raiz) {
+void mostrarFB(No const * const raiz) {
     if (raiz == NULL) return;
-    mostrarFB(raiz->esquerdo);
+    mostrarFB(raiz->esq);
     printf("No %d: altura=%d  FB=%d\n", raiz->chave, raiz->altura, fb(raiz));
-    mostrarFB(raiz->direito);
+    mostrarFB(raiz->dir);
 }
 
 /*=========================================================
@@ -218,11 +218,108 @@ void mostrarFB(TNo const * const raiz) {
     Retorno:
         void. Se raiz for NULL, não imprime nada.
   =========================================================*/
-void desenhar(TNo const * const raiz, int nivel) {
+void desenhar(No const * const raiz, int nivel) {
     int i;
     if (raiz == NULL) return;
-    desenhar(raiz->direito, nivel + 1);
+    desenhar(raiz->dir, nivel + 1);
     for (i = 0; i < nivel; i++) printf("      ");
     printf("%d\n", raiz->chave);
-    desenhar(raiz->esquerdo, nivel + 1);
+    desenhar(raiz->esq, nivel + 1);
+}
+
+/*=========================================================
+    Função: inserir
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Insere dados de um sócio-torcedor em um nó da árvore AVL 
+    Parâmetros:
+        1 - raiz   : Nó que rebeberá dados
+        2 - chave  : número da carteirinha do sócio (ID único)
+        3 - nome   : ponteiro para o nome do sócio
+        4 - plano  : código do plano
+        5 - valor  : valor da mensalidade do plano
+        6 - status : situação do sócio
+    Retorno:
+        No * : endereço do nó criado e preenchido com os valores
+                recebidos.
+        NULL : O nó não pôde ser criado
+=========================================================*/
+No * inserir(No *raiz, int chave, const char *nome, int plano,
+     float valor, int status) {
+
+    /* --- Passo 1: inserção normal de BST --- */
+    if (raiz == NULL)
+        return criarNo(chave, nome, plano, valor, status);
+
+    if (chave < raiz->chave)
+        raiz->esq = inserir(raiz->esq, chave, nome,
+             plano, valor, status);
+    else if (chave > raiz->chave)
+        raiz->dir = inserir(raiz->dir, chave, nome,
+             plano, valor, status);
+    else
+        return raiz;   /* duplicata — ignora */
+
+    /* --- Passo 2: atualiza altura deste nó --- */
+    atualizaAltura(raiz);
+
+    /* --- Passo 3: verifica FB e rotaciona se necessário --- */
+    int f = fb(raiz);
+
+    /* LL: pesado à esquerda, inserção no filho esq do filho esq */
+    if (f > 1 && chave < raiz->esq->chave)
+        return rotacaoDireita(raiz);
+
+    /* RR: pesado à direita, inserção no filho dir do filho dir */
+    if (f < -1 && chave > raiz->dir->chave)
+        return rotacaoEsquerda(raiz);
+
+    /* LR: pesado à esquerda, inserção no filho dir do filho esq */
+    if (f > 1 && chave > raiz->esq->chave)
+        return rotacaoLR(raiz);
+
+    /* RL: pesado à direita, inserção no filho esq do filho dir */
+    if (f < -1 && chave < raiz->dir->chave)
+        return rotacaoRL(raiz);
+
+    return raiz;   /* sem rotação necessária */
+}
+
+/*=========================================================
+    Função: buscar
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Busca um sócio torcedor pelo sua carteirinha (ID)
+    Parâmetros:
+        1 - raiz   : Nó que rebeberá dados
+        2 - chave  : número da carteirinha do sócio (ID único)
+    Retorno:
+        No * : endereço do nó procurado
+=========================================================*/
+No * buscar(No *raiz, int chave) {
+    if (raiz == NULL || raiz->chave == chave)
+        return raiz;
+    if (chave < raiz->chave)
+        return buscar(raiz->esq, chave);
+    return buscar(raiz->dir, chave);
+}
+
+/*=========================================================
+    Função: liberar
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Libera a árvore inteira;
+    Parâmetros:
+        1 - raiz   : Nó da raiz
+    Retorno:
+        void.
+=========================================================*/
+void liberarArvore(No *raiz) {
+    if (raiz == NULL) return;
+    liberarArvore(raiz->esq);
+    liberarArvore(raiz->dir);
+    free(raiz);
 }
