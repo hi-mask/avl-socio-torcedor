@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "socioAVL.h"
+#include "../libraries/socioAVL.h"
 
 /*=========================================================
     Função: criarNo
