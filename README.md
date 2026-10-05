@@ -126,7 +126,7 @@ ID;Nome;Plano;Valor;Status
 | Nome | GitHub |
 |---|---|
 | Marcos Paulo da Silva Oliveira | [@hi-mask](https://github.com/hi-mask) |
-| Samuel de Godoy Larroque | [@usuario2](https://github.com/usuario2) |
+| Samuel de Godoy Larroque | [@Chaveiro-do-cmd](https://github.com/Chaveiro-do-cmd) |
 
 ## Convenções do código
 
