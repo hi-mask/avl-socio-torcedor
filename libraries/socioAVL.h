@@ -228,4 +228,76 @@ No * buscar(No *raiz, int chave);
         void.
 =========================================================*/
 void liberarArvore(No *raiz);
+
+
+/* =============================================================================
+ * ROTAÇÃO LL — giro à DIREITA
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = +2  (pesado à esquerda)
+ *   FB do filho esquerdo = +1 (inserção no filho esquerdo do filho esquerdo)
+ *
+ * Antes:          Depois:
+ *     y              x
+ *    /              / \
+ *   x       →     T1   y
+ *  / \                / \
+ * T1  T2            T2   T3
+ *
+ * O filho esquerdo (x) sobe e assume o lugar de y.
+ * O nó y desce e vira filho DIREITO de x.
+ */
+No* rotacaoDireita(No *y);
+
+
+/* =============================================================================
+ * ROTAÇÃO RR — giro à ESQUERDA
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = -2  (pesado à direita)
+ *   FB do filho direito = -1 (inserção no filho direito do filho direito)
+ *
+ * Antes:      Depois:
+ *   x              y
+ *    \            / \
+ *     y    →     x   T3
+ *    / \          \
+ *   T2  T3        T2
+ *
+ * O filho direito (y) sobe e assume o lugar de x.
+ * O nó x desce e vira filho ESQUERDO de y.
+ */
+No* rotacaoEsquerda(No *x);
+
+
+/* =============================================================================
+ * ROTAÇÃO LR — dupla esquerda-direita
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = +2  (pesado à esquerda)
+ *   FB do filho esquerdo = -1 (inserção no filho DIREITO do filho esquerdo)
+ *
+ * Solução em duas etapas:
+ *   1. Rotação à ESQUERDA no filho esquerdo
+ *   2. Rotação à DIREITA na raiz
+ */
+No* rotacaoLR(No *z);
+
+
+/* =============================================================================
+ * ROTAÇÃO RL — dupla direita-esquerda
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = -2  (pesado à direita)
+ *   FB do filho direito = +1 (inserção no filho ESQUERDO do filho direito)
+ *
+ * Solução em duas etapas:
+ *   1. Rotação à DIREITA no filho direito
+ *   2. Rotação à ESQUERDA na raiz
+ */
+No* rotacaoRL(No *z);
 #endif

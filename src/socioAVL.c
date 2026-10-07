@@ -323,3 +323,108 @@ void liberarArvore(No *raiz) {
     liberarArvore(raiz->dir);
     free(raiz);
 }
+
+/* =============================================================================
+ * ROTAÇÃO LL — giro à DIREITA
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = +2  (pesado à esquerda)
+ *   FB do filho esquerdo = +1 (inserção no filho esquerdo do filho esquerdo)
+ *
+ * Antes:          Depois:
+ *     y              x
+ *    /              / \
+ *   x       →     T1   y
+ *  / \                / \
+ * T1  T2            T2   T3
+ *
+ * O filho esquerdo (x) sobe e assume o lugar de y.
+ * O nó y desce e vira filho DIREITO de x.
+ */
+No* rotacaoDireita(No *y) {
+
+    No *x  = y->esq;   /* x é o filho esquerdo — vai subir        */
+    No *T2 = x->dir;   /* T2 é o filho direito de x — muda de pai */
+
+    /* --- o giro acontece aqui --- */
+    x->dir = y;        /* y desce: vira filho DIREITO de x        */
+    y->esq = T2;       /* T2 passa a ser filho esquerdo de y      */
+
+    /* atualiza alturas: y primeiro pois agora está ABAIXO de x */
+    atualizaAltura(y);
+    atualizaAltura(x);
+
+    return x;   /* x é a nova raiz desta subárvore */
+}
+
+
+/* =============================================================================
+ * ROTAÇÃO RR — giro à ESQUERDA
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = -2  (pesado à direita)
+ *   FB do filho direito = -1 (inserção no filho direito do filho direito)
+ *
+ * Antes:      Depois:
+ *   x              y
+ *    \            / \
+ *     y    →     x   T3
+ *    / \          \
+ *   T2  T3        T2
+ *
+ * O filho direito (y) sobe e assume o lugar de x.
+ * O nó x desce e vira filho ESQUERDO de y.
+ */
+No* rotacaoEsquerda(No *x) {
+
+    No *y  = x->dir;   /* y é o filho direito — vai subir         */
+    No *T2 = y->esq;   /* T2 é o filho esquerdo de y — muda de pai */
+
+    /* --- o giro acontece aqui --- */
+    y->esq = x;        /* x desce: vira filho ESQUERDO de y       */
+    x->dir = T2;       /* T2 passa a ser filho direito de x       */
+
+    /* atualiza alturas: x primeiro pois agora está ABAIXO de y */
+    atualizaAltura(x);
+    atualizaAltura(y);
+
+    return y;   /* y é a nova raiz desta subárvore */
+}
+
+
+/* =============================================================================
+ * ROTAÇÃO LR — dupla esquerda-direita
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = +2  (pesado à esquerda)
+ *   FB do filho esquerdo = -1 (inserção no filho DIREITO do filho esquerdo)
+ *
+ * Solução em duas etapas:
+ *   1. Rotação à ESQUERDA no filho esquerdo
+ *   2. Rotação à DIREITA na raiz
+ */
+No* rotacaoLR(No *z) {
+    z->esq = rotacaoEsquerda(z->esq);   /* passo 1: gira o filho esquerdo */
+    return rotacaoDireita(z);            /* passo 2: gira a raiz           */
+}
+
+
+/* =============================================================================
+ * ROTAÇÃO RL — dupla direita-esquerda
+ * =============================================================================
+ *
+ * Quando usar:
+ *   FB do nó = -2  (pesado à direita)
+ *   FB do filho direito = +1 (inserção no filho ESQUERDO do filho direito)
+ *
+ * Solução em duas etapas:
+ *   1. Rotação à DIREITA no filho direito
+ *   2. Rotação à ESQUERDA na raiz
+ */
+No* rotacaoRL(No *z) {
+    z->dir = rotacaoDireita(z->dir);    /* passo 1: gira o filho direito  */
+    return rotacaoEsquerda(z);           /* passo 2: gira a raiz           */
+}
