@@ -399,4 +399,22 @@ int alturaReal(No const * const no);
               Uma árvore vazia (NULL) é considerada válida.
   =========================================================*/
 int ehAVL(No const * const no);
+
+/*=========================================================
+    Função: contarNos
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Conta quantos nós existem na árvore, percorrendo-a
+        recursivamente: 1 (o nó atual) + nós da subárvore
+        esquerda + nós da subárvore direita. Usada para
+        mostrar a quantidade de sócios após a carga e após
+        cada remoção.
+    Parâmetros:
+        1 - raiz : raiz da árvore (ou subárvore) a ser contada
+    Retorno:
+        int : quantidade de nós da árvore, ou 0 se raiz for
+              NULL (árvore vazia).
+  =========================================================*/
+int contarNos(No * const raiz);
 #endif
