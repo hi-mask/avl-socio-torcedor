@@ -428,3 +428,184 @@ No* rotacaoRL(No *z) {
     z->dir = rotacaoDireita(z->dir);    /* passo 1: gira o filho direito  */
     return rotacaoEsquerda(z);           /* passo 2: gira a raiz           */
 }
+
+/*=========================================================
+    Função: menorNo
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Desce sempre pela esquerda a partir de um nó até
+        encontrar o nó sem filho esquerdo, que é o de menor
+        chave daquela subárvore. Usada no caso 3 da remoção
+        (nó com 2 filhos) para achar o sucessor em ordem.
+    Parâmetros:
+        1 - no : raiz da subárvore a ser percorrida
+    Retorno:
+        No * : endereço do nó de menor chave da subárvore.
+        NULL : se no for NULL.
+    Observação:
+        A função apenas localiza o nó; não o remove nem
+        altera a árvore.
+  =========================================================*/
+No * menorNo(No * no){
+    if(no == NULL){
+        return NULL;
+    }
+    return menorNo(no->esq);
+}
+
+/*=========================================================
+    Função: remover
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Remove da árvore AVL o sócio com a chave informada e
+        rebalanceia o caminho percorrido. Trata os três casos:
+        1 - folha: libera o nó e devolve NULL;
+        2 - um filho: libera o nó e devolve o filho;
+        3 - dois filhos: copia os dados do sucessor (menor nó
+            da subárvore direita) para o nó atual e remove o
+            sucessor da direita.
+    Parâmetros:
+        1 - no    : raiz da árvore (ou subárvore)
+        2 - chave : número da carteirinha do sócio a remover
+    Retorno:
+        No * : nova raiz da subárvore após a remoção e o
+               rebalanceamento.
+        NULL : se a subárvore ficou vazia ou se no for NULL.
+    Observação:
+        Se a chave não existir, a árvore não muda. O retorno
+        deve ser sempre recebido: raiz = remover(raiz, chave).
+  =========================================================*/
+No * remover(No * const no, int chave){
+    if(no == NULL) return NULL;
+
+    if(chave < no->chave){
+        no->esq = remover(no->esq, chave);
+    }
+    else if(chave > no->chave){
+        no->dir = remover(no->dir, chave);
+    }
+    //caso 1
+    else if(no->esq == NULL && no->dir == NULL){
+        free(no);
+        return NULL;
+    }
+    //caso 2
+    else if(no->esq == NULL && no->dir != NULL){
+        No * pAux = no->dir;
+        free(no);
+        return pAux;
+    }
+    else if(no->esq != NULL && no->dir == NULL){
+        No * pAux = no->esq;
+        free(no);
+        return pAux;
+    }
+    //caso 3
+    else {
+        No * sucessor = menorNo(no->dir);
+        no->chave = sucessor->chave;
+        no->plano = sucessor->plano;
+        no->status = sucessor->status;
+        no->valor = sucessor->valor;
+        strncpy(no->nome, sucessor->nome, sizeof(no->nome) - 1);
+        no->nome[sizeof(no->nome) - 1] = '\0';
+        no->dir = remover(no->dir, sucessor->chave);
+    }
+    return balancear(no);
+    
+}
+
+/*=========================================================
+    Função: balancear
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Atualiza a altura de um nó, calcula seu fator de
+        balanceamento e, se estiver fora do intervalo [-1, 1],
+        aplica a rotação adequada (LL, LR, RR ou RL). A escolha
+        é feita pelo FB do filho pesado: LL se filho esq >= 0,
+        LR se filho esq < 0, RR se filho dir <= 0 e RL se
+        filho dir > 0. Chamada na volta da recursão da remoção.
+    Parâmetros:
+        1 - no : nó (raiz da subárvore) a ser balanceado
+    Retorno:
+        No * : nova raiz da subárvore (o próprio no, se não
+               houve rotação, ou o nó que subiu após a rotação).
+        NULL : se no for NULL.
+    Observação:
+        O retorno deve sempre ser ligado ao pai, pois a raiz
+        da subárvore pode mudar.
+  =========================================================*/
+No * balancear(No * const no){
+    int f;
+    if(no == NULL) return NULL;
+
+    atualizaAltura(no);
+    f = fb(no);
+
+    /* pesado a esquerda */
+    if(f > 1){
+        if(fb(no->esq) >= 0)
+            return rotacaoDireita(no);      /* LL */
+        return rotacaoLR(no);               /* LR */
+    }
+
+    /* pesado a direita */
+    if(f < -1){
+        if(fb(no->dir) <= 0)
+            return rotacaoEsquerda(no);     /* RR */
+        return rotacaoRL(no);               /* RL */
+    }
+
+    return no;
+}
+
+/*=========================================================
+    Função: alturaReal
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Calcula a altura de uma subárvore percorrendo seus
+        nós, sem usar o campo altura gravado. Serve para
+        conferir se as alturas gravadas estão corretas.
+    Parâmetros:
+        1 - no : raiz da subárvore (pode ser NULL)
+    Retorno:
+        int : altura real da subárvore, ou 0 se no for NULL.
+  =========================================================*/
+int alturaReal(No const * const no){
+    int ae, ad;
+    if(no == NULL) return 0;
+    ae = alturaReal(no->esq);
+    ad = alturaReal(no->dir);
+    return 1 + (ae > ad ? ae : ad);
+}
+
+/*=========================================================
+    Função: ehAVL
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Verifica se a árvore é uma AVL válida: em todos os nós,
+        a altura gravada deve ser igual à altura real e o fator
+        de balanceamento deve estar entre -1 e 1.
+    Parâmetros:
+        1 - no : raiz da árvore (ou subárvore) a ser verificada
+    Retorno:
+        int : 1 se a árvore é AVL válida, 0 caso contrário.
+              Uma árvore vazia (NULL) é considerada válida.
+  =========================================================*/
+int ehAVL(No const * const no){
+    int f;
+    if(no == NULL) return 1;
+
+    if(no->altura != alturaReal(no)) return 0;
+
+    f = alturaReal(no->esq) - alturaReal(no->dir);
+    if(f < -1 || f > 1) return 0;
+
+    // retorna o valor lógico da sentença
+    return ehAVL(no->esq) && ehAVL(no->dir);
+}
