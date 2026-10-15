@@ -416,5 +416,5 @@ int ehAVL(No const * const no);
         int : quantidade de nós da árvore, ou 0 se raiz for
               NULL (árvore vazia).
   =========================================================*/
-int contarNos(No * const raiz);
+int contarNos(No const * const raiz);
 #endif

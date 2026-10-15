@@ -448,9 +448,9 @@ No* rotacaoRL(No *z) {
         altera a árvore.
   =========================================================*/
 No * menorNo(No * no){
-    if(no == NULL){
-        return NULL;
-    }
+    if(no == NULL)return NULL;
+    if(no->esq == NULL) return no;
+    
     return menorNo(no->esq);
 }
 
