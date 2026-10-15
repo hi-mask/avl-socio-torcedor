@@ -116,8 +116,8 @@ ID;Nome;Plano;Valor;Status
 | Pacote | Responsável |
 |---|---|
 | 1. Dados do tema | Marcos Paulo da Silva Oliveira |
-| 2. Núcleo AVL | Todos |
-| 3. Funcionalidades | Todos |
+| 2. Núcleo AVL | Samuel de Godoy Larroque |
+| 3. Funcionalidades | Marcos Paulo da Silva Oliveira |
 | 4. Métricas e relatório | Todos |
 | 5. Apresentação | Todos |
 
