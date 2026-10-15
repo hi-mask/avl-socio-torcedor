@@ -300,4 +300,121 @@ No* rotacaoLR(No *z);
  *   2. Rotação à ESQUERDA na raiz
  */
 No* rotacaoRL(No *z);
+
+/*=========================================================
+    Função: menorNo
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Desce sempre pela esquerda a partir de um nó até
+        encontrar o nó sem filho esquerdo, que é o de menor
+        chave daquela subárvore. Usada no caso 3 da remoção
+        (nó com 2 filhos) para achar o sucessor em ordem.
+    Parâmetros:
+        1 - no : raiz da subárvore a ser percorrida
+    Retorno:
+        No * : endereço do nó de menor chave da subárvore.
+        NULL : se no for NULL.
+    Observação:
+        A função apenas localiza o nó; não o remove nem
+        altera a árvore.
+  =========================================================*/
+No * menorNo(No * no);
+
+/*=========================================================
+    Função: remover
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Remove da árvore AVL o sócio com a chave informada e
+        rebalanceia o caminho percorrido. Trata os três casos:
+        1 - folha: libera o nó e devolve NULL;
+        2 - um filho: libera o nó e devolve o filho;
+        3 - dois filhos: copia os dados do sucessor (menor nó
+            da subárvore direita) para o nó atual e remove o
+            sucessor da direita.
+    Parâmetros:
+        1 - no    : raiz da árvore (ou subárvore)
+        2 - chave : número da carteirinha do sócio a remover
+    Retorno:
+        No * : nova raiz da subárvore após a remoção e o
+               rebalanceamento.
+        NULL : se a subárvore ficou vazia ou se no for NULL.
+    Observação:
+        Se a chave não existir, a árvore não muda. O retorno
+        deve ser sempre recebido: raiz = remover(raiz, chave).
+  =========================================================*/
+No * remover(No * no, int chave);
+
+/*=========================================================
+    Função: balancear
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Atualiza a altura de um nó, calcula seu fator de
+        balanceamento e, se estiver fora do intervalo [-1, 1],
+        aplica a rotação adequada (LL, LR, RR ou RL). A escolha
+        é feita pelo FB do filho pesado: LL se filho esq >= 0,
+        LR se filho esq < 0, RR se filho dir <= 0 e RL se
+        filho dir > 0. Chamada na volta da recursão da remoção.
+    Parâmetros:
+        1 - no : nó (raiz da subárvore) a ser balanceado
+    Retorno:
+        No * : nova raiz da subárvore (o próprio no, se não
+               houve rotação, ou o nó que subiu após a rotação).
+        NULL : se no for NULL.
+    Observação:
+        O retorno deve sempre ser ligado ao pai, pois a raiz
+        da subárvore pode mudar.
+  =========================================================*/
+No * balancear(No * const no);
+
+/*=========================================================
+    Função: alturaReal
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Calcula a altura de uma subárvore percorrendo seus
+        nós, sem usar o campo altura gravado. Serve para
+        conferir se as alturas gravadas estão corretas.
+    Parâmetros:
+        1 - no : raiz da subárvore (pode ser NULL)
+    Retorno:
+        int : altura real da subárvore, ou 0 se no for NULL.
+  =========================================================*/
+int alturaReal(No const * const no);
+
+/*=========================================================
+    Função: ehAVL
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Verifica se a árvore é uma AVL válida: em todos os nós,
+        a altura gravada deve ser igual à altura real e o fator
+        de balanceamento deve estar entre -1 e 1.
+    Parâmetros:
+        1 - no : raiz da árvore (ou subárvore) a ser verificada
+    Retorno:
+        int : 1 se a árvore é AVL válida, 0 caso contrário.
+              Uma árvore vazia (NULL) é considerada válida.
+  =========================================================*/
+int ehAVL(No const * const no);
+
+/*=========================================================
+    Função: contarNos
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Conta quantos nós existem na árvore, percorrendo-a
+        recursivamente: 1 (o nó atual) + nós da subárvore
+        esquerda + nós da subárvore direita. Usada para
+        mostrar a quantidade de sócios após a carga e após
+        cada remoção.
+    Parâmetros:
+        1 - raiz : raiz da árvore (ou subárvore) a ser contada
+    Retorno:
+        int : quantidade de nós da árvore, ou 0 se raiz for
+              NULL (árvore vazia).
+  =========================================================*/
+int contarNos(No const * const raiz);
 #endif
