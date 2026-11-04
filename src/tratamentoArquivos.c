@@ -187,3 +187,102 @@ void salvarAVLNoArquivo(No const * const raiz, const char nomeArquivo[]){
  
     fclose(arquivo);
 }
+
+/*=========================================================
+    Função: carregarArquivoNaBST
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Lê o arquivo de sócios (uma linha por sócio, campos
+        separados por ';') e insere cada sócio na árvore BST.
+        A primeira linha do arquivo é o cabeçalho e é descartada.
+        Linhas vazias ou incompletas são ignoradas.
+
+        Formato da linha: ID;Nome;Plano;Valor;Status
+
+    Parâmetros:
+        1 - raiz        : raiz atual da árvore (NULL se vazia)
+        2 - nomeArquivo : nome do arquivo a ser lido
+
+    Retorno:
+        No * : nova raiz da árvore.
+               Se o arquivo não abrir, devolve a raiz recebida.
+
+  =========================================================*/
+No * carregarArquivoNaBST(No * raiz, const char nomeArquivo[]){
+
+    FILE *arquivo = fopen(nomeArquivo, "r");
+
+    if (verificarAberturaArquivo(arquivo))
+        return raiz;
+
+    char linha[256];
+
+    // Descarta o cabeçalho do arquivo.
+    fgets(linha, sizeof(linha), arquivo);
+
+    while (fgets(linha, sizeof(linha), arquivo) != NULL){
+
+        char *campo = strtok(linha, ";");
+
+        if (verificarCampo(campo))
+            continue;
+
+        int chave = atoi(campo);
+
+        campo = strtok(NULL, ";");
+
+        if (verificarCampo(campo))
+            continue;
+
+        char nome[TAM_NOME];
+        strcpy(nome, campo);
+
+        campo = strtok(NULL, ";");
+
+        if (verificarCampo(campo))
+            continue;
+
+        int plano = atoi(campo);
+
+        campo = strtok(NULL, ";");
+
+        if (verificarCampo(campo))
+            continue;
+
+        float valor = atof(campo);
+
+        campo = strtok(NULL, ";");
+
+        if (verificarCampo(campo))
+            continue;
+
+        int status = atoi(campo);
+
+        // Verifica se a chave já existe na BST.
+        No *atual = raiz;
+
+        while (atual != NULL && atual->chave != chave){
+
+            if (chave < atual->chave)
+                atual = atual->esq;
+            else
+                atual = atual->dir;
+        }
+
+        if (atual != NULL){
+
+            printf("Aviso: socio com chave %d ja existe na BST. "
+                   "Registro ignorado.\n", chave);
+        }
+        else{
+
+            raiz = inserirBST(raiz, chave, nome,
+                              plano, valor, status);
+        }
+    }
+
+    fclose(arquivo);
+
+    return raiz;
+}

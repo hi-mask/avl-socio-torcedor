@@ -101,4 +101,27 @@ void gravarEmOrdem(FILE *arquivo, No const * const raiz);
  
   =========================================================*/
 void salvarAVLNoArquivo(No const * const raiz, const char nomeArquivo[]);
+
+/*=========================================================
+    Função: carregarArquivoNaBST
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Lê o arquivo de sócios (uma linha por sócio, campos
+        separados por ';') e insere cada sócio na árvore BST.
+        A primeira linha do arquivo é o cabeçalho e é descartada.
+        Linhas vazias ou incompletas são ignoradas.
+
+        Formato da linha: ID;Nome;Plano;Valor;Status
+
+    Parâmetros:
+        1 - raiz        : raiz atual da árvore (NULL se vazia)
+        2 - nomeArquivo : nome do arquivo a ser lido
+
+    Retorno:
+        No * : nova raiz da árvore.
+               Se o arquivo não abrir, devolve a raiz recebida.
+
+  =========================================================*/
+No * carregarArquivoNaBST(No *raiz, const char nomeArquivo[]);
 #endif
