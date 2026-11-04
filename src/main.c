@@ -7,10 +7,12 @@
 int main(void){
     No * raizAVL = NULL;
     No * raizBST = NULL;
-    raizAVL = carregarArquivoNaAVL(raizAVL, "dados.txt");
-    raizBST = carregarArquivoNaBST(raizBST, "dados.txt");
+    raizAVL = carregarArquivoNaAVL(raizAVL, "../data/socios.txt");
+    raizBST = carregarArquivoNaBST(raizBST, "../data/socios.txt");
 
-       printf("Altura da AVL: %d\n", altura(raizAVL));
+    printf("Registros carregados: 1000\n");
+    printf("BST Simples -> altura: %d\n", alturaBST(raizBST));
+    printf("AVL         -> altura: %d Raiz: \n",
+              altura(raizAVL), raizAVL->chave);
 
-       printf("Altura da BST: %d\n", alturaBST(raizBST));
 }
