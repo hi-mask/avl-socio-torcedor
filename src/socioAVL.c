@@ -3,6 +3,12 @@
 #include <string.h>
 #include "../libraries/socioAVL.h"
 
+int contLL = 0;
+int contRR = 0;
+int contLR = 0;
+int contRL = 0;
+int visitados = 0;
+
 /*=========================================================
     Função: criarNo
     Autor: Marcos Paulo da Silva Oliveira

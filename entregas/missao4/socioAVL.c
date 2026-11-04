@@ -795,3 +795,4 @@ int alturaBST(No * raiz){
 
     return (esquerda > direita ? esquerda : direita) + 1;
 }
+

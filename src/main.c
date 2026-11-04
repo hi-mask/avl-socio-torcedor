@@ -12,7 +12,8 @@ int main(void){
 
     printf("Registros carregados: 1000\n");
     printf("BST Simples -> altura: %d\n", alturaBST(raizBST));
-    printf("AVL         -> altura: %d Raiz: \n",
-              altura(raizAVL), raizAVL->chave);
+    printf("AVL         -> altura: %d Raiz: %d\n",
+        altura(raizAVL), raizAVL->chave);
+    mostrarContadores();
 
 }

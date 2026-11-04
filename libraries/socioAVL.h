@@ -2,7 +2,11 @@
 #define SOCIOAVL_H
 #define TAM_NOME 50
 
-int contLL = 0, contRR = 0, contLR = 0, contRL = 0, visitados = 0;
+extern int contLL;
+extern int contRR;
+extern int contLR;
+extern int contRL;
+extern int visitados;
 
 /*=========================================================
 /*
