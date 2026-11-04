@@ -655,6 +655,11 @@ void mostrarContadores(void){
 }
 
 void listarFaixa(No const * const raiz, int a, int b){
+    if(a > b){
+        printf("Faixa invalida\n");
+        return;
+    }
+    
     if(raiz == NULL) return;
 
     visitados++;
