@@ -417,4 +417,104 @@ int ehAVL(No const * const no);
               NULL (árvore vazia).
   =========================================================*/
 int contarNos(No const * const raiz);
+
+/*=========================================================
+    Função: zerarContadores
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Zera os contadores de rotações da árvore AVL,
+        reiniciando as quantidades de rotações simples
+        (LL e RR) e duplas (LR e RL).
+    Parâmetros:
+        Nenhum.
+    Retorno:
+        void : não retorna nenhum valor.
+  =========================================================*/
+void zerarContadores(void);
+
+/*=========================================================
+    Função: mostrarContadores
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Exibe na tela a quantidade de rotações realizadas
+        pela árvore AVL, discriminando os casos LL, RR, LR
+        e RL.
+    Parâmetros:
+        Nenhum.
+    Retorno:
+        void : não retorna nenhum valor.
+  =========================================================*/
+void mostrarContadores(void);
+
+/*=========================================================
+    Função: listarFaixa
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Percorre a árvore de busca binária para listar os
+        sócios cujas chaves pertencem ao intervalo [a, b].
+        Utiliza as propriedades da árvore para evitar
+        percorrer subárvores que não contenham chaves
+        dentro do intervalo. Incrementa o contador de nós
+        visitados durante a busca.
+    Parâmetros:
+        1 - raiz : raiz da árvore (ou subárvore) a ser
+                   percorrida.
+        2 - a    : limite inferior do intervalo.
+        3 - b    : limite superior do intervalo.
+    Retorno:
+        void : não retorna nenhum valor.
+  =========================================================*/
+void listarFaixa(No const * const raiz, int a, int b);
+
+/*=========================================================
+    Função: inserirBST
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Insere um novo nó em uma árvore binária de busca (BST),
+        mantendo a propriedade de que valores menores ficam à
+        esquerda e valores maiores ficam à direita.
+
+    Parâmetros:
+        1 - raiz   : raiz atual da árvore
+        2 - chave  : chave identificadora do sócio
+        3 - nome   : nome do sócio
+        4 - plano  : plano contratado pelo sócio
+        5 - valor  : valor do plano
+        6 - status : status atual do sócio
+
+    Retorno:
+        No*. Retorna a raiz da árvore após a inserção.
+
+    Observação:
+        Diferentemente da inserção AVL, esta função não realiza
+        rotações nem balanceamento da árvore.
+  =========================================================*/
+No * inserirBST(No * raiz, int chave, const char * nome,
+               int plano, float valor, int status);
+
+/*=========================================================
+    Função: alturaBST
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Calcula a altura de uma árvore binária de busca (BST)
+        considerando a maior altura entre as subárvores esquerda
+        e direita.
+
+    Parâmetros:
+        1 - raiz : raiz da árvore cuja altura será calculada
+
+    Retorno:
+        int. Retorna a altura da árvore. Para uma árvore vazia,
+        retorna 0.
+
+    Observação:
+        A altura é calculada recursivamente a partir das folhas
+        até a raiz.
+=========================================================*/
+int alturaBST(No * raiz);
 #endif
