@@ -640,6 +640,19 @@ int contarNos(No const * const raiz){
     contarNos(raiz->dir);
 }
 
+/*=========================================================
+    Função: zerarContadores
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Zera os contadores de rotações da árvore AVL,
+        reiniciando as quantidades de rotações simples
+        (LL e RR) e duplas (LR e RL).
+    Parâmetros:
+        Nenhum.
+    Retorno:
+        void : não retorna nenhum valor.
+  =========================================================*/
 void zerarContadores(void){
     contLL = 0;
     contRR = 0;
@@ -647,6 +660,19 @@ void zerarContadores(void){
     contRL = 0;
 }
 
+/*=========================================================
+    Função: mostrarContadores
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Exibe na tela a quantidade de rotações realizadas
+        pela árvore AVL, discriminando os casos LL, RR, LR
+        e RL.
+    Parâmetros:
+        Nenhum.
+    Retorno:
+        void : não retorna nenhum valor.
+  =========================================================*/
 void mostrarContadores(void){
     printf("LL: %d\n", contLL);
     printf("RR: %d\n", contRR);
@@ -654,6 +680,25 @@ void mostrarContadores(void){
     printf("RL: %d\n", contRL);
 }
 
+/*=========================================================
+    Função: listarFaixa
+    Autor: Samuel de Godoy Larroque
+
+    Descrição:
+        Percorre a árvore de busca binária para listar os
+        sócios cujas chaves pertencem ao intervalo [a, b].
+        Utiliza as propriedades da árvore para evitar
+        percorrer subárvores que não contenham chaves
+        dentro do intervalo. Incrementa o contador de nós
+        visitados durante a busca.
+    Parâmetros:
+        1 - raiz : raiz da árvore (ou subárvore) a ser
+                   percorrida.
+        2 - a    : limite inferior do intervalo.
+        3 - b    : limite superior do intervalo.
+    Retorno:
+        void : não retorna nenhum valor.
+  =========================================================*/
 void listarFaixa(No const * const raiz, int a, int b){
     if(raiz == NULL) return;
 
