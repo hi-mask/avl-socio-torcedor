@@ -17,7 +17,7 @@ O sistema usa a AVL como índice e também para listar sócios em ordem e por fa
 | Campo | Tipo em C | Descrição |
 |---|---|---|
 | `chave` | `int` | ID do sócio (número da carteirinha), único |
-| `nome` | `char[50]` | Nome do sócio |
+| `nome` | `char[TAM_NOME]` | Nome do sócio |
 | `plano` | `int` | 1 = Bronze, 2 = Prata, 3 = Ouro, 4 = Diamante |
 | `valor` | `float` | Mensalidade do plano |
 | `status` | `int` | 1 = em dia, 0 = inadimplente |
@@ -27,7 +27,7 @@ O sistema usa a AVL como índice e também para listar sócios em ordem e por fa
 ```c
 typedef struct No {
     int chave;            /* idSocio: numero da carteirinha */
-    char nome[50];
+    char nome[TAM_NOME];
     int plano;            /* 1=Bronze 2=Prata 3=Ouro 4=Diamante */
     float valor;
     int status;           /* 1=em dia  0=inadimplente */
@@ -102,7 +102,7 @@ ID;Nome;Plano;Valor;Status
 
 | Medida | BST simples | AVL |
 |---|---|---|
-| Altura da árvore | | |
+| Altura da árvore | 1000 | 10 |
 | Comparações para buscar a chave 1 | 1 | 10|
 | Comparações para buscar a chave 250 | 250 | 9|
 | Comparações para buscar a chave 500 | 500 | 8 |
