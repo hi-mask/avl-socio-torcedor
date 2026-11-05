@@ -286,3 +286,39 @@ No * carregarArquivoNaBST(No * raiz, const char nomeArquivo[]){
 
     return raiz;
 }
+
+/*=========================================================
+    Função: contarSociosArquivo
+    Autor: [Seu nome]
+
+    Descrição:
+        Conta a quantidade de sócios registrados em um
+        arquivo, desconsiderando a primeira linha (cabeçalho).
+
+    Parâmetros:
+        1 - nomeArquivo : caminho ou nome do arquivo a ser lido.
+
+    Retorno:
+        Quantidade de sócios registrados no arquivo.
+        Retorna -1 caso ocorra um erro na abertura do arquivo.
+=========================================================*/
+int contarSociosArquivo(const char nomeArquivo[]){
+    FILE *arquivo = fopen(nomeArquivo, "r");
+
+    if(verificarAberturaArquivo(arquivo))
+        return -1;
+
+    int quantidade = 0;
+    char buffer[256];
+
+    // Ignora o cabecalho
+    fgets(buffer, sizeof(buffer), arquivo);
+
+    while(fgets(buffer, sizeof(buffer), arquivo) != NULL){
+        quantidade++;
+    }
+
+    fclose(arquivo);
+
+    return quantidade;
+}

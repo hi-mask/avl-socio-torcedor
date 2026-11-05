@@ -124,4 +124,21 @@ void salvarAVLNoArquivo(No const * const raiz, const char nomeArquivo[]);
 
   =========================================================*/
 No * carregarArquivoNaBST(No *raiz, const char nomeArquivo[]);
+
+/*=========================================================
+    Função: contarSociosArquivo
+    Autor: [Seu nome]
+
+    Descrição:
+        Conta a quantidade de sócios registrados em um
+        arquivo, desconsiderando a primeira linha (cabeçalho).
+
+    Parâmetros:
+        1 - nomeArquivo : caminho ou nome do arquivo a ser lido.
+
+    Retorno:
+        Quantidade de sócios registrados no arquivo.
+        Retorna -1 caso ocorra um erro na abertura do arquivo.
+=========================================================*/
+int contarSociosArquivo(const char nomeArquivo[]);
 #endif

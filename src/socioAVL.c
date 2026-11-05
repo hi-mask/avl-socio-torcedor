@@ -297,19 +297,37 @@ No * inserir(No *raiz, int chave, const char *nome, int plano,
     Autor: Samuel de Godoy Larroque
 
     Descrição:
-        Busca um sócio torcedor pelo sua carteirinha (ID)
+        Busca um nó em uma árvore AVL a partir de sua chave,
+        contabilizando a quantidade de nós visitados durante
+        a busca.
+
     Parâmetros:
-        1 - raiz   : Nó que rebeberá dados
-        2 - chave  : número da carteirinha do sócio (ID único)
+        1 - raiz         : raiz atual da árvore
+        2 - chave        : chave identificadora do nó procurado
+        3 - comparacoes  : endereço da variável que armazena
+                           a quantidade de nós visitados
+
     Retorno:
-        No * : endereço do nó procurado
+        No*. Retorna o endereço do nó encontrado ou NULL
+        caso a chave não exista na árvore.
+
+    Observação:
+        A cada nó visitado, incrementa o contador de comparações.
+        A busca utiliza a propriedade de ordenação da AVL,
+        percorrendo apenas uma das subárvores a cada etapa.
 =========================================================*/
-No * buscar(No *raiz, int chave) {
-    if (raiz == NULL || raiz->chave == chave)
+No * buscar(No *raiz, int chave, int *comparacoes) {
+    if (raiz == NULL){
+        return NULL;
+    }
+    (*comparacoes)++;
+
+    if (chave == raiz->chave)
         return raiz;
+        
     if (chave < raiz->chave)
-        return buscar(raiz->esq, chave);
-    return buscar(raiz->dir, chave);
+        return buscar(raiz->esq, chave, comparacoes);
+    return buscar(raiz->dir, chave, comparacoes);
 }
 
 /*=========================================================
@@ -349,7 +367,7 @@ void liberarArvore(No *raiz) {
  * O nó y desce e vira filho DIREITO de x.
  */
 No* rotacaoDireita(No *y) {
-
+    contLL++;
     No *x  = y->esq;   /* x é o filho esquerdo — vai subir        */
     No *T2 = x->dir;   /* T2 é o filho direito de x — muda de pai */
 
@@ -384,7 +402,7 @@ No* rotacaoDireita(No *y) {
  * O nó x desce e vira filho ESQUERDO de y.
  */
 No* rotacaoEsquerda(No *x) {
-
+    contRR++;
     No *y  = x->dir;   /* y é o filho direito — vai subir         */
     No *T2 = y->esq;   /* T2 é o filho esquerdo de y — muda de pai */
 
@@ -413,6 +431,7 @@ No* rotacaoEsquerda(No *x) {
  *   2. Rotação à DIREITA na raiz
  */
 No* rotacaoLR(No *z) {
+    contLR++;
     z->esq = rotacaoEsquerda(z->esq);   /* passo 1: gira o filho esquerdo */
     return rotacaoDireita(z);            /* passo 2: gira a raiz           */
 }
@@ -431,6 +450,7 @@ No* rotacaoLR(No *z) {
  *   2. Rotação à ESQUERDA na raiz
  */
 No* rotacaoRL(No *z) {
+    contRL++;
     z->dir = rotacaoDireita(z->dir);    /* passo 1: gira o filho direito  */
     return rotacaoEsquerda(z);           /* passo 2: gira a raiz           */
 }
@@ -705,28 +725,28 @@ void listarFaixa(No const * const raiz, int a, int b){
         return;
     }
     
-    if(raiz == NULL) return;
-
+    if(raiz == NULL){
+        return;
+    }
     visitados++;
 
     if(raiz->chave > a){
         listarFaixa(raiz->esq, a, b);
-        return;
+    }
+
+   
+    if(raiz->chave >= a && raiz->chave <= b){
+        mostrarSocio(raiz);
     }
 
     if(raiz->chave < b){
         listarFaixa(raiz->dir, a, b);
-        return;
-    }
-
-    if(raiz->chave >= a && raiz->chave <= b){
-        mostrarSocio(raiz);
     }
 }
 
 /*=========================================================
     Função: inserirBST
-    Autor: Samuel de Godoy Larroque
+    Autor: Marcos Paulo da Silva Oliveira
 
     Descrição:
         Insere um novo nó em uma árvore binária de busca (BST),
@@ -767,7 +787,7 @@ No * inserirBST(No * raiz, int chave, const char * nome,
 
 /*=========================================================
     Função: alturaBST
-    Autor: Samuel de Godoy Larroque
+    Autor: Marcos Paulo da Silva Oliveira
 
     Descrição:
         Calcula a altura de uma árvore binária de busca (BST)
@@ -794,4 +814,103 @@ int alturaBST(No * raiz){
     int direita = alturaBST(raiz->dir);
 
     return (esquerda > direita ? esquerda : direita) + 1;
+}
+
+/*=========================================================
+    Função: buscarBST
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Busca um nó em uma árvore binária de busca (BST) a
+        partir de sua chave, contabilizando a quantidade de
+        nós visitados durante a busca.
+
+    Parâmetros:
+        1 - raiz         : raiz atual da árvore
+        2 - chave        : chave identificadora do nó procurado
+        3 - comparacoes  : endereço da variável que armazena
+                           a quantidade de nós visitados
+
+    Retorno:
+        No*. Retorna o endereço do nó encontrado ou NULL
+        caso a chave não exista na árvore.
+
+    Observação:
+        A cada nó visitado, incrementa o contador de comparações.
+        A busca utiliza a propriedade de ordenação da BST,
+        percorrendo apenas uma das subárvores a cada etapa.
+        Não realiza balanceamento da árvore.
+=========================================================*/
+No * buscarBST(No * raiz, int chave, int * comparacoes){
+
+    if (raiz == NULL)
+        return NULL;
+
+    (*comparacoes)++;
+
+    if (chave == raiz->chave)
+        return raiz;
+
+    if (chave < raiz->chave)
+        return buscarBST(raiz->esq, chave, comparacoes);
+
+    return buscarBST(raiz->dir, chave, comparacoes);
+}
+
+/*=========================================================
+    Função: removerBST
+    Autor: [Seu nome]
+
+    Descrição:
+        Remove um nó de uma árvore binária de busca (BST),
+        preservando a propriedade de ordenação da árvore.
+
+    Parâmetros:
+        1 - no    : raiz atual da árvore
+        2 - chave : identificador do sócio que será removido
+
+    Retorno:
+        Ponteiro para a raiz atualizada da árvore após a remoção.
+=========================================================*/
+No * removerBST(No * const no, int chave){
+    if(no == NULL) return NULL;
+
+    if(chave < no->chave){
+        no->esq = removerBST(no->esq, chave);
+    }
+    else if(chave > no->chave){
+        no->dir = removerBST(no->dir, chave);
+    }
+    // caso 1
+    else if(no->esq == NULL && no->dir == NULL){
+        free(no);
+        return NULL;
+    }
+    // caso 2
+    else if(no->esq == NULL && no->dir != NULL){
+        No * pAux = no->dir;
+        free(no);
+        return pAux;
+    }
+    else if(no->esq != NULL && no->dir == NULL){
+        No * pAux = no->esq;
+        free(no);
+        return pAux;
+    }
+    // caso 3
+    else {
+        No * sucessor = menorNo(no->dir);
+
+        no->chave = sucessor->chave;
+        no->plano = sucessor->plano;
+        no->status = sucessor->status;
+        no->valor = sucessor->valor;
+
+        strncpy(no->nome, sucessor->nome, sizeof(no->nome) - 1);
+        no->nome[sizeof(no->nome) - 1] = '\0';
+
+        no->dir = removerBST(no->dir, sucessor->chave);
+    }
+
+    return no;
 }
