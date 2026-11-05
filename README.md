@@ -103,13 +103,13 @@ ID;Nome;Plano;Valor;Status
 | Medida | BST simples | AVL |
 |---|---|---|
 | Altura da árvore | | |
-| Comparações para buscar a chave 1 | | |
-| Comparações para buscar a chave 250 | | |
-| Comparações para buscar a chave 500 | | |
-| Comparações para buscar a chave 750 | | |
-| Comparações para buscar a chave 1000 | | |
+| Comparações para buscar a chave 1 | 1 | 10|
+| Comparações para buscar a chave 250 | 250 | 9|
+| Comparações para buscar a chave 500 | 500 | 8 |
+| Comparações para buscar a chave 750 | 750 | 9 |
+| Comparações para buscar a chave 1000 | 1000 | 10 |
 
-**Rotações realizadas na carga (AVL):** LL = `?`, RR = `?`, LR = `?`, RL = `?`
+**Rotações realizadas na carga (AVL):** LL = 0, RR = 990, LR = 0, RL = 0
 
 ## Organização do trabalho (EAP)
 

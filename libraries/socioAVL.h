@@ -213,14 +213,26 @@ No * inserir(No *raiz, int chave, const char *nome, int plano,
     Autor: Samuel de Godoy Larroque
 
     Descrição:
-        Busca um sócio torcedor pelo sua carteirinha (ID)
+        Busca um nó em uma árvore AVL a partir de sua chave,
+        contabilizando a quantidade de nós visitados durante
+        a busca.
+
     Parâmetros:
-        1 - raiz   : Nó que rebeberá dados
-        2 - chave  : número da carteirinha do sócio (ID único)
+        1 - raiz         : raiz atual da árvore
+        2 - chave        : chave identificadora do nó procurado
+        3 - comparacoes  : endereço da variável que armazena
+                           a quantidade de nós visitados
+
     Retorno:
-        No * : endereço do nó procurado
+        No*. Retorna o endereço do nó encontrado ou NULL
+        caso a chave não exista na árvore.
+
+    Observação:
+        A cada nó visitado, incrementa o contador de comparações.
+        A busca utiliza a propriedade de ordenação da AVL,
+        percorrendo apenas uma das subárvores a cada etapa.
 =========================================================*/
-No * buscar(No *raiz, int chave);
+No * buscar(No *raiz, int chave, int *comparacoes);
 
 /*=========================================================
     Função: liberar
@@ -477,7 +489,7 @@ void listarFaixa(No const * const raiz, int a, int b);
 
 /*=========================================================
     Função: inserirBST
-    Autor: Samuel de Godoy Larroque
+    Autor: Marcos Paulo da Silva Oliveira
 
     Descrição:
         Insere um novo nó em uma árvore binária de busca (BST),
@@ -504,7 +516,7 @@ No * inserirBST(No * raiz, int chave, const char * nome,
 
 /*=========================================================
     Função: alturaBST
-    Autor: Samuel de Godoy Larroque
+    Autor: Marcos Paulo da Silva Oliveira
 
     Descrição:
         Calcula a altura de uma árvore binária de busca (BST)
@@ -523,4 +535,48 @@ No * inserirBST(No * raiz, int chave, const char * nome,
         até a raiz.
 =========================================================*/
 int alturaBST(No * raiz);
+
+/*=========================================================
+    Função: buscarBST
+    Autor: Marcos Paulo da Silva Oliveira
+
+    Descrição:
+        Busca um nó em uma árvore binária de busca (BST) a
+        partir de sua chave, contabilizando a quantidade de
+        nós visitados durante a busca.
+
+    Parâmetros:
+        1 - raiz         : raiz atual da árvore
+        2 - chave        : chave identificadora do nó procurado
+        3 - comparacoes  : endereço da variável que armazena
+                           a quantidade de nós visitados
+
+    Retorno:
+        No*. Retorna o endereço do nó encontrado ou NULL
+        caso a chave não exista na árvore.
+
+    Observação:
+        A cada nó visitado, incrementa o contador de comparações.
+        A busca utiliza a propriedade de ordenação da BST,
+        percorrendo apenas uma das subárvores a cada etapa.
+        Não realiza balanceamento da árvore.
+=========================================================*/
+No * buscarBST(No * raiz, int chave, int * comparacoes);
+
+/*=========================================================
+    Função: removerBST
+    Autor: [Seu nome]
+
+    Descrição:
+        Remove um nó de uma árvore binária de busca (BST),
+        preservando a propriedade de ordenação da árvore.
+
+    Parâmetros:
+        1 - no    : raiz atual da árvore
+        2 - chave : identificador do sócio que será removido
+
+    Retorno:
+        Ponteiro para a raiz atualizada da árvore após a remoção.
+=========================================================*/
+No * removerBST(No * const no, int chave);
 #endif
